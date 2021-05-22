@@ -7,6 +7,7 @@ library(rgdal)
 library(scales)
 library(shiny)
 library(shinydashboard)
+library(shinyWidgets)
 library(tidyverse)
 
 # Load and clean data
@@ -99,29 +100,77 @@ overviewMap<-function(chosenDate){
 }
 
 # Plotly Line Graph
-lineGraph<-function(yaxis, countries){
-    plot_ly(country_data %>%
-                select(location, date, yaxis) %>%
-                filter(location %in% countries) %>%
-                replace(is.na(.),0), 
-            x=~date,
-            y=~yaxis,
-            color=~location, 
-            type="scatter", 
-            mode="lines")
+global_plot_cases<-function(world_date){
+    temp<-ggplot(world_date, aes(x=date, y=total_cases)) + 
+        geom_line(color="darkblue") +
+        labs(x="", y="Total Confirmed Cases") + 
+        theme_bw() + 
+        scale_x_date(date_labels="%Y-%b",
+                     date_breaks="3 month") +
+        scale_y_continuous(labels=unit_format(unit="M", scale=1e-6))
+    return(ggplotly(temp))
 }
 
-countries=c("Spain", "Brazil")
-yaxis="total_cases"
-total<-country_data %>%
-    select(location, date, total_cases) %>%
-    filter(location %in% countries) %>%
-    replace(is.na(.),0)
-plot_ly(total, 
-        x=~date,
-        y=%(yaxis),
-        color=~location, 
-        type="scatter", 
-        mode="lines")
+global_plot_newcases<-function(world_date){
+    temp<-ggplot(world_date, aes(x=date, y=new_cases)) + 
+        geom_line(color="darkblue") +
+        labs(x="", y="New Cases") + 
+        theme_bw() + 
+        scale_x_date(date_labels="%Y-%b",
+                     date_breaks="3 month") +
+        scale_y_continuous(labels=unit_format(unit="M", scale=1e-6))
+    return(ggplotly(temp))
+}
 
-# fix plotly chart
+global_plot_deaths<-function(world_date){
+    temp<-ggplot(world_date, aes(x=date, y=total_deaths)) + 
+        geom_line(color="darkblue") +
+        labs(x="", y="Total Deaths") + 
+        theme_bw() + 
+        scale_x_date(date_labels="%Y-%b",
+                     date_breaks="3 month") +
+        scale_y_continuous(labels=unit_format(unit="M", scale=1e-6))
+    return(ggplotly(temp))
+}
+ses<-ggplotly(globalnewCases)
+
+country_plot_cases<-function(country){
+    temp<-ggplot(country, aes(x=date, y=total_cases)) +
+        geom_line(color="darkblue") + 
+        labs(x="", y="Total cases") + 
+        theme_bw() + 
+        scale_x_date(date_labels="%Y-%b",
+                     date_breaks="3 month")
+    return(ggplotly(temp))
+}
+
+country_plot_newcases<-function(country){
+    temp<-ggplot(country, aes(x=date, y=new_cases)) +
+        geom_line(color="darkblue") + 
+        labs(x="", y="New cases") + 
+        theme_bw() + 
+        scale_x_date(date_labels="%Y-%b",
+                     date_breaks="3 month")
+    return(ggplotly(temp))
+}
+
+country_plot_deaths<-function(country){
+    temp<-ggplot(country, aes(x=date, y=total_deaths)) +
+        geom_line(color="darkblue") + 
+        labs(x="", y="Total deaths") + 
+        theme_bw() + 
+        scale_x_date(date_labels="%Y-%b",
+                     date_breaks="3 month")
+    return(ggplotly(temp))
+}
+
+# Country Statistics
+countryconfirmedCases<-function(selecteddate, country){
+    return(comma_format()(country$total_cases[country$date==selecteddate]))
+}
+countryconfirmedDeaths<-function(selecteddate, country){
+    return(comma_format()(country$total_deaths[country$date==selecteddate]))
+}
+countrynewcases<-function(selecteddate, country){
+    return(comma_format()(country$new_cases[country$date==selecteddate]))
+}
