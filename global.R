@@ -1,5 +1,6 @@
 # Load libraries
 
+library(DT)
 library(leaflet)
 library(lubridate)
 library(plotly)

@@ -4,6 +4,7 @@ shinyUI(dashboardPage(
         sidebarMenu(
             menuItem("Overview", tabName="overview", icon=icon("globe")),
             menuItem("Country", tabName="country", icon=icon("flag")),
+            menuItem("Data Table", tabName="datatable", icon=icon("table")),
             menuItem("About", tabName="about", icon=icon("info-circle"))
         )
     ),
@@ -113,6 +114,26 @@ shinyUI(dashboardPage(
                         )
                     )
             ),
+            tabItem(tabName="datatable", 
+                    fluidRow(
+                        column(width=10, offset=1,
+                               sliderInput("dtsliderDate",
+                                           label="Select Date:",
+                                           min=min(country_data$date),
+                                           max=max(country_data$date),
+                                           value=max(country_data$date), 
+                                           width="100%")
+                        )
+                    ), 
+                    fluidRow(width=12,
+                        box(title="Data Table", 
+                            solidHeader=TRUE, 
+                            status="primary", 
+                            width="null", 
+                            DTOutput("dt")
+                        )
+                    )
+            ), 
             tabItem(tabName="about",
                     fluidRow(width=12,
                              box(title="About this project",

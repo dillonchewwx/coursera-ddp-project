@@ -45,6 +45,16 @@ shinyServer(function(input, output) {
         return(temp)
     })
     
+    data_table<-reactive({
+        temp<-country_data %>%
+            filter(date==input$dtsliderDate) %>%
+            replace(is.na(.), 0)
+        return(datatable(temp, 
+                         caption=paste0("COVID-19 Statistics for: ", input$dtsliderDate)))
+    })
+    
+    output$dt<-renderDT(data_table())
+    
     output$country_cases<-renderPlotly(country_plot_cases(selected_country()))
     output$country_deaths<-renderPlotly(country_plot_deaths(selected_country()))
     output$country_newcases<-renderPlotly(country_plot_newcases(selected_country()))
