@@ -133,7 +133,6 @@ global_plot_deaths<-function(world_date){
         scale_y_continuous(labels=unit_format(unit="M", scale=1e-6))
     return(ggplotly(temp))
 }
-ses<-ggplotly(globalnewCases)
 
 country_plot_cases<-function(country){
     temp<-ggplot(country, aes(x=date, y=total_cases)) +
