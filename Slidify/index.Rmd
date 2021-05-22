@@ -23,7 +23,7 @@ knit        : slidify::knit2slides
 ---
 ## Dashboard Outline
 
-![Dashboard Outline Source: https://dillonchewwx.shinyapps.io/coursera-ddp-project2/](Data/overview.jpg)
+![Dashboard Outline Source: https://dillonchewwx.shinyapps.io/coursera-ddp-project2/](../Slidify/Data/overview.jpg)
 
 ---
 ## Dashboard Description
